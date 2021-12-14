@@ -78,5 +78,6 @@ add end of line for scrape_configs: on prometheus.yml
         - targets: ["localhost:9888"]
 ```
 
+systemctl restart prometheus.service
 
 Good luck...
