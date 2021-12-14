@@ -1,3 +1,4 @@
+# myexporter.service
 [Unit]
 Description=My channel exporter
 After=network.target
@@ -9,7 +10,7 @@ Restart=always
 RestartSec=1
 WorkingDirectory=/var/lib/my_exporter
 EnvironmentFile=/var/lib/my_exporter/.env
-ExecStart=/var/lib/my_exporter/main
+ExecStart=/var/lib/my_exporter/my_exporter
 
 [Install]
 WantedBy=multi-user.target

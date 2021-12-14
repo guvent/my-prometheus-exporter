@@ -28,9 +28,43 @@ go version
 
 ```
 
-go build -o main
+go mod download 
 
+go build -o my_exporter
 
+mkdir /var/lib/my_exporter
+
+mv my_exporter /var/lib/my_exporter
+
+chmod +x /var/lib/my_exporter/my_exporter
+
+touch /var/lib/my_exporter/.env
+
+vi /etc/systemd/system/myexporter.service
+
+```
+[Unit]
+Description=My channel exporter
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+WorkingDirectory=/var/lib/my_exporter
+EnvironmentFile=/var/lib/my_exporter/.env
+ExecStart=/var/lib/my_exporter/my_exporter
+
+[Install]
+WantedBy=multi-user.target
+```
+
+systemctl daemon-reload
+systemctl enable --now myexporter.service
+systemctl status myexporter.service
+
+open web browser and go to http://<SERVER_ADDRESS>:9888/
 
 
 Good luck...

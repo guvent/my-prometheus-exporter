@@ -4,7 +4,7 @@
 *** PROMETHEUS SERVER ***
 
 
-apt install gnupg wget curl net-tools -y
+apt install gnupg wget curl net-tools git -y
 
 mkdir prometheus-install
 cd prometheus-install/
