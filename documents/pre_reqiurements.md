@@ -28,7 +28,7 @@ go version
 
 ```
 
-go mod download 
+go mod download
 
 go build -o my_exporter
 
@@ -65,6 +65,18 @@ systemctl enable --now myexporter.service
 systemctl status myexporter.service
 
 open web browser and go to http://<SERVER_ADDRESS>:9888/
+
+add end of line for scrape_configs: on prometheus.yml 
+
+```
+    - job_name: "my_exporter"
+      scrape_interval: 10s
+      scrape_timeout: 10s
+      metrics_path: "/metrics"
+    
+      static_configs:
+        - targets: ["localhost:9888"]
+```
 
 
 Good luck...

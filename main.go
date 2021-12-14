@@ -42,29 +42,43 @@ func (collector *fooCollector) Collect(ch chan<- prometheus.Metric) {
 	ch <- m2
 }
 
-
 func main() {
 	foo := newFooCollector()
 	prometheus.MustRegister(foo)
 
-	http.HandleFunc("/console/set", func(w http.ResponseWriter, r *http.Request) {
-		metricValue = 10
+	http.HandleFunc("/console/up", func(w http.ResponseWriter, r *http.Request) {
+		metricValue++
 
 		w.Header().Add("Location", "/")
 		w.WriteHeader(302)
 
-		if _, err := w.Write([]byte(``)); err != nil { log.Fatal(err) }
+		if _, err := w.Write([]byte(``)); err != nil {
+			log.Fatal(err)
+		}
+	})
+
+	http.HandleFunc("/console/down", func(w http.ResponseWriter, r *http.Request) {
+		metricValue--
+
+		w.Header().Add("Location", "/")
+		w.WriteHeader(302)
+
+		if _, err := w.Write([]byte(``)); err != nil {
+			log.Fatal(err)
+		}
 	})
 
 	http.HandleFunc("/console/pick", func(w http.ResponseWriter, r *http.Request) {
 		metricValue = 10
-		time.Sleep(time.Second*1)
+		time.Sleep(time.Second * 1)
 		metricValue = 0
 
 		w.Header().Add("Location", "/")
 		w.WriteHeader(302)
 
-		if _, err := w.Write([]byte(``)); err != nil { log.Fatal(err) }
+		if _, err := w.Write([]byte(``)); err != nil {
+			log.Fatal(err)
+		}
 	})
 
 	http.HandleFunc("/console/reset", func(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +87,9 @@ func main() {
 		w.Header().Add("Location", "/")
 		w.WriteHeader(302)
 
-		if _, err := w.Write([]byte(``)); err != nil { log.Fatal(err) }
+		if _, err := w.Write([]byte(``)); err != nil {
+			log.Fatal(err)
+		}
 	})
 
 	http.Handle("/metrics", promhttp.Handler())
@@ -85,8 +101,9 @@ func main() {
             <body>
             <h1>ConfigMap Reload</h1>
             <p><a href='/metrics'>Show metrics data</a></p>
-            <p><a href='/console/set'>Set value is 10</a></p>
-            <p><a href='/console/pick'>Pick value 1 sec. is 10</a></p>
+            <p><a href='/console/up'>Value increment 1</a></p>
+            <p><a href='/console/down'>Value decrement 1</a></p>
+            <p><a href='/console/pick'>Pick value 1 sec. as 10</a></p>
             <p><a href='/console/reset'>Reset value to 0</a></p>
             </body>
             </html>
