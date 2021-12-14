@@ -1,0 +1,15 @@
+[Unit]
+Description=My channel exporter
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+WorkingDirectory=/var/lib/my_exporter
+EnvironmentFile=/var/lib/my_exporter/.env
+ExecStart=/var/lib/my_exporter/main
+
+[Install]
+WantedBy=multi-user.target

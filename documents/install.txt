@@ -1,0 +1,121 @@
+
+** Install Prometheus and AlertManager on Debian 10.
+
+*** PROMETHEUS SERVER ***
+
+
+apt install gnupg wget curl net-tools -y
+
+mkdir prometheus-install
+cd prometheus-install/
+
+
+wget https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz
+tar -zxvf prometheus-2.31.1.linux-amd64.tar.gz
+
+
+sudo useradd -M prometheus
+sudo usermod -L prometheus
+sudo apt-get install gosu
+sudo mkdir /etc/prometheus
+sudo mkdir /var/lib/prometheus
+sudo chown prometheus:prometheus /etc/prometheus
+sudo chown prometheus:prometheus /var/lib/prometheus
+sudo cp prometheus-2.31.1.linux-amd64/prometheus /usr/local/bin/
+sudo cp prometheus-2.31.1.linux-amd64/promtool /usr/local/bin/
+sudo chown prometheus:prometheus /usr/local/bin/prometheus
+sudo chown prometheus:prometheus /usr/local/bin/promtool
+sudo cp -r prometheus-2.31.1.linux-amd64/prometheus.yml /etc/prometheus/
+sudo cp -r prometheus-2.31.1.linux-amd64/consoles /etc/prometheus/
+sudo cp -r prometheus-2.31.1.linux-amd64/console_libraries/ /etc/prometheus/
+sudo chown -R prometheus:prometheus /etc/prometheus/prometheus.yml
+sudo chown -R prometheus:prometheus /etc/prometheus/consoles
+sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
+sudo -u prometheus /usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/var/lib/prometheus/data --web.console.templates=/etc/prometheus/consoles --web.console.libraries=/etc/prometheus/consoles_libraries
+
+
+sudo vi /etc/systemd/system/prometheus.service
+
+### prometheus.service
+Description=Prometheus Time Series Collection and Processing Server
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+ExecStart=/usr/local/bin/prometheus \
+    --config.file=/etc/prometheus/prometheus.yml \
+    --storage.tsdb.path=/var/lib/prometheus/data \
+    --web.console.templates=/etc/prometheus/consoles \
+    --web.console.libraries=/etc/prometheus/consoles_libraries
+
+[Install]
+WantedBy=multi-user.target
+### prometheus.service
+
+
+systemctl daemon-reload
+systemctl enable --now  prometheus
+systemctl status prometheus
+
+
+
+*** ALERT MANAGER ***
+
+
+wget https://github.com/prometheus/alertmanager/releases/download/v0.23.0/alertmanager-0.23.0.linux-amd64.tar.gz
+
+tar -zxvf alertmanager-0.23.0.linux-amd64.tar.gz
+
+cd alertmanager-0.23.0.linux-amd64
+
+sudo mkdir -p /etc/alertmanager
+sudo mkdir -p /var/lib/alertmanager
+
+sudo cp amtool alertmanager /usr/local/bin
+sudo cp alertmanager.yml /etc/alertmanager
+
+
+sudo useradd -M alertmanager
+sudo usermod -L alertmanager
+
+sudo chown alertmanager:alertmanager /usr/local/bin/amtool
+sudo chown alertmanager:alertmanager /usr/local/bin/alertmanager
+
+sudo chown -R alertmanager:alertmanager /var/lib/alertmanager /etc/alertmanager/*
+
+
+sudo vi /etc/systemd/system/alertmanager.service
+
+### alertmanager.service
+Description=Prometheus Alert Manager
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=alertmanager
+Group=alertmanager
+ExecStart=/usr/local/bin/alertmanager \
+  --config.file=/etc/alertmanager/alertmanager.yml \
+  --storage.path=/var/lib/alertmanager
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+### alertmanager.service
+
+
+
+systemctl daemon-reload
+systemctl enable --now  alertmanager
+systemctl status alertmanager
+
+sudo systemctl restart prometheus
+
+
+
+
