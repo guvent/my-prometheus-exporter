@@ -80,4 +80,33 @@ add end of line for scrape_configs: on prometheus.yml
 
 systemctl restart prometheus.service
 
+# sudo vi /etc/prometheus/alerts/my_alert.yml
+
+```
+groups:
+- name: HighLevelAlarm
+  rules:
+    - alert: HighLevelValue
+      expr: bar_metric{instance="localhost:9888", job="my_exporter"} > 9
+      # expr: bar_metric > 9
+      for: 20s
+      annotations:
+      title: 'Instance {{ $labels.instance }} over'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has been over for more than 1 minute.'
+      labels:
+      severity: 'critical'
+```
+
+sudo vi /etc/prometheus/prometheus.yml
+
+```
+rule_files:
+...
+- "alerts/my_alert.yml"
+```
+
+promtool check rules /etc/prometheus/alerts/my_alert.yml
+
+curl -X POST http://localhost:9090/-/reload
+
 Good luck...

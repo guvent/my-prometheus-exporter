@@ -68,9 +68,31 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/console/up2", func(w http.ResponseWriter, r *http.Request) {
+		metricValue = +10
+
+		w.Header().Add("Location", "/")
+		w.WriteHeader(302)
+
+		if _, err := w.Write([]byte(``)); err != nil {
+			log.Fatal(err)
+		}
+	})
+
+	http.HandleFunc("/console/down2", func(w http.ResponseWriter, r *http.Request) {
+		metricValue = -10
+
+		w.Header().Add("Location", "/")
+		w.WriteHeader(302)
+
+		if _, err := w.Write([]byte(``)); err != nil {
+			log.Fatal(err)
+		}
+	})
+
 	http.HandleFunc("/console/pick", func(w http.ResponseWriter, r *http.Request) {
-		metricValue = 10
-		time.Sleep(time.Second * 1)
+		metricValue = 20
+		time.Sleep(time.Second * 20)
 		metricValue = 0
 
 		w.Header().Add("Location", "/")
@@ -97,13 +119,15 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if _, err := w.Write([]byte(`
             <html>
-            <head><title>Volume Exporter Metrics</title></head>
+            <head><title>My Exporter Metrics</title></head>
             <body>
             <h1>ConfigMap Reload</h1>
             <p><a href='/metrics'>Show metrics data</a></p>
             <p><a href='/console/up'>Value increment 1</a></p>
             <p><a href='/console/down'>Value decrement 1</a></p>
-            <p><a href='/console/pick'>Pick value 1 sec. as 10</a></p>
+            <p><a href='/console/up2'>Value decrement 10</a></p>
+            <p><a href='/console/down2'>Value decrement 10</a></p>
+            <p><a href='/console/pick'>Pick value 20 sec. as 10</a></p>
             <p><a href='/console/reset'>Reset value to 0</a></p>
             </body>
             </html>
