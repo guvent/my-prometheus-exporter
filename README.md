@@ -80,7 +80,7 @@ add end of line for scrape_configs: on prometheus.yml
 
 systemctl restart prometheus.service
 
-# sudo vi /etc/prometheus/alerts/my_alert.yml
+sudo vi /etc/prometheus/alerts/my_alert.yml
 
 ```
 groups:
