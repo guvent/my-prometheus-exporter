@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a8590f3-5cf6-445a-974a-e14ead8cac3c" name="Changes" comment="add alert">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/documents/install.txt" beforeDir="false" afterPath="$PROJECT_DIR$/documents/install.txt" afterDir="false" />
+    <list default="true" id="8a8590f3-5cf6-445a-974a-e14ead8cac3c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -93,7 +90,8 @@
     <MESSAGE value="re-init commit." />
     <MESSAGE value="complete as exporter." />
     <MESSAGE value="complete README.md document." />
-    <option name="LAST_COMMIT_MESSAGE" value="complete README.md document." />
+    <MESSAGE value="add alert manager configuration and all tests successful." />
+    <option name="LAST_COMMIT_MESSAGE" value="add alert manager configuration and all tests successful." />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

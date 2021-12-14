@@ -125,7 +125,7 @@ func main() {
             <p><a href='/metrics'>Show metrics data</a></p>
             <p><a href='/console/up'>Value increment 1</a></p>
             <p><a href='/console/down'>Value decrement 1</a></p>
-            <p><a href='/console/up2'>Value decrement 10</a></p>
+            <p><a href='/console/up2'>Value increment 10</a></p>
             <p><a href='/console/down2'>Value decrement 10</a></p>
             <p><a href='/console/pick'>Pick value 20 sec. as 10</a></p>
             <p><a href='/console/reset'>Reset value to 0</a></p>
